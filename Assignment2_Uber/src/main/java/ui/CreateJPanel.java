@@ -6,6 +6,7 @@
 package ui;
 
 import javax.swing.JOptionPane;
+import model.Catalog;
 import model.VitalSignHistory;
 import model.VitalSigns;
 
@@ -20,12 +21,13 @@ public class CreateJPanel extends javax.swing.JPanel {
      */
     
     VitalSignHistory history;
-    
+    Catalog catalog;
     static int num=1;
             
-    public CreateJPanel(VitalSignHistory history) {
+    public CreateJPanel(VitalSignHistory history,Catalog catalog) {
         initComponents();
         this.history=history;
+        this.catalog=catalog;
     }
 
     /**
@@ -273,10 +275,36 @@ public class CreateJPanel extends javax.swing.JPanel {
         String Manufacturer=txt_manufacturer.getText();
         String Product_Date=txt_pro_date.getText();
         String Maintain_Certi=txt_maintain_certi.getText();
-        int Seat=Integer.parseInt(txt_seat.getText());
+        int Seat=0;
+        if(txt_seat.getText().isEmpty()){
+            Seat=0;
+        }
+        else{
+            Seat=Integer.parseInt(txt_seat.getText());
+
+        }
+        //int Seat=Integer.parseInt(txt_seat.getText());
         String Model_num=txt_model.getText();
         int Serial_num=num++;
         
+        while(true){
+//        if(txt_city.getText().isEmpty()||txt_maintain_certi.getText().length()==0||txt_manufacturer.getText().length()==0||txt_model.getText().length()==0||txt_name.getText().length()==0||txt_pro_date.getText().length()==0||txt_seat.getText().length()==0||txt_type.getText().length()==0){
+//            JOptionPane.showMessageDialog(this,"Please enter information!");
+//            break;
+//        }
+        if(Type.isEmpty()||City_Car.isEmpty()||Manufacturer.isEmpty()||Product_Date.isEmpty()||Maintain_Certi.isEmpty()||Seat==0||Model_num.isEmpty()){
+                        JOptionPane.showMessageDialog(this,"Please enter information!");
+            break;
+        }
+        else if(txt_pro_date.getText().length()!=8||!isNumeric(txt_pro_date.getText())){
+            JOptionPane.showMessageDialog(this,"Please enter correct Production Date!");
+            break;
+        }
+        else if(!isNumeric(txt_seat.getText())||Integer.valueOf(txt_seat.getText()).intValue()<0){
+            JOptionPane.showMessageDialog(this,"Please enter correct seat number!");
+            break;
+        }
+        else{
         VitalSigns vs=history.addNewVitals();
         
         vs.setName(Name);
@@ -290,8 +318,11 @@ public class CreateJPanel extends javax.swing.JPanel {
         vs.setSeat(Seat);
         vs.setSerial_num(Serial_num);
         
+        catalog.setTime();
         //showDialog
         JOptionPane.showMessageDialog(this,"save!");
+        break;}
+        }
         
         txt_city.setText("");
         txt_maintain_certi.setText("");
@@ -328,4 +359,13 @@ public class CreateJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txt_seat;
     private javax.swing.JTextField txt_type;
     // End of variables declaration//GEN-END:variables
+
+    public static boolean isNumeric(String str){  
+        for (int i = str.length();--i>=0;){    
+            if (!Character.isDigit(str.charAt(i))){  
+                return false;  
+            }  
+        }  
+        return true;  
+    }  
 }

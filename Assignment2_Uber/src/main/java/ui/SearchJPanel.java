@@ -5,7 +5,12 @@
  */
 package ui;
 
+import java.util.Arrays;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Temp;
 import model.VitalSignHistory;
+import model.VitalSigns;
 
 /**
  *
@@ -18,9 +23,56 @@ public class SearchJPanel extends javax.swing.JPanel {
      */
     VitalSignHistory history;
     
+    
     public SearchJPanel(VitalSignHistory history) {
         initComponents();
+        
         this.history=history;
+        int avacar=0;
+        int notavacar=0;
+        for(VitalSigns vs:history.getHistory()){
+            if(vs.isAva()){
+                avacar++;
+            }
+            else{
+                notavacar++;
+            }
+        }
+        txt_avalow.setText(""+avacar);
+        txt_avaup.setText(""+notavacar);
+        
+        String[] allmanu=new String[10];
+        int index=0;
+        for(VitalSigns vs:history.getHistory()){
+            allmanu[index]=vs.getManufacturer();
+            index++;
+            
+            
+        }
+        String all="";
+        //JOptionPane.showMessageDialog(allmanu);
+        for(int j=0;allmanu[j]!=null;j++){
+            all=all+allmanu[j]+" ";
+        }
+        txt_allmanu.setText(all);
+//        int index=0;
+//        for(VitalSigns vs:history.getHistory()){
+//            int num=0;
+//            for(int i=0;i<allmanu.length;i++){
+//                if(!allmanu[i].equals(vs.getManufacturer()))
+//                    num++;
+//            }
+//            if(num==allmanu.length){
+//                allmanu[index]=vs.getManufacturer();
+//                index++;
+//            }
+//            
+//        }
+//        String all="";
+//        for(int j=0;j<allmanu.length;j++){
+//            all=allmanu[j]+" ";
+//        }
+//        txt_allmanu.setText(all);
     }
 
     /**
@@ -39,25 +91,29 @@ public class SearchJPanel extends javax.swing.JPanel {
         txt_manufacturer = new javax.swing.JTextField();
         lab_manufacturer = new javax.swing.JLabel();
         txt_pro_date = new javax.swing.JTextField();
-        comb_ava = new javax.swing.JComboBox<>();
         lab_pro_date = new javax.swing.JLabel();
-        txt_maintain_certi = new javax.swing.JTextField();
-        lab_maintain_certi = new javax.swing.JLabel();
+        txt_serial_num = new javax.swing.JTextField();
+        lab_serial_num = new javax.swing.JLabel();
         txt_seat_low = new javax.swing.JTextField();
         lab_seat = new javax.swing.JLabel();
         txt_model = new javax.swing.JTextField();
         lab_model = new javax.swing.JLabel();
-        txt_name = new javax.swing.JTextField();
+        txt_ava = new javax.swing.JTextField();
         lab_name = new javax.swing.JLabel();
-        lab_ava = new javax.swing.JLabel();
         txt_type = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        txt_seat_low1 = new javax.swing.JTextField();
+        btn_submit = new javax.swing.JButton();
+        txt_seat_up = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txt_avalow = new javax.swing.JTextField();
         txt_avaup = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        txt_allmanu = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txt_main = new javax.swing.JTextField();
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Search");
@@ -89,19 +145,17 @@ public class SearchJPanel extends javax.swing.JPanel {
             }
         });
 
-        comb_ava.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "yes", "no", " " }));
-
         lab_pro_date.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lab_pro_date.setText("Production Date(MM/DD/YYYY):");
+        lab_pro_date.setText("Production Year(YYYY):");
 
-        txt_maintain_certi.addActionListener(new java.awt.event.ActionListener() {
+        txt_serial_num.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_maintain_certiActionPerformed(evt);
+                txt_serial_numActionPerformed(evt);
             }
         });
 
-        lab_maintain_certi.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lab_maintain_certi.setText("Maintenance Certificate:");
+        lab_serial_num.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lab_serial_num.setText("Serial Number:");
 
         txt_seat_low.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,17 +175,14 @@ public class SearchJPanel extends javax.swing.JPanel {
         lab_model.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lab_model.setText("Model Number:");
 
-        txt_name.addActionListener(new java.awt.event.ActionListener() {
+        txt_ava.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_nameActionPerformed(evt);
+                txt_avaActionPerformed(evt);
             }
         });
 
         lab_name.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lab_name.setText("Name:");
-
-        lab_ava.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lab_ava.setText("Avaliable:");
+        lab_name.setText("Avaliavle:");
 
         txt_type.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -139,11 +190,16 @@ public class SearchJPanel extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setText("jButton1");
-
-        txt_seat_low1.addActionListener(new java.awt.event.ActionListener() {
+        btn_submit.setText("Submit");
+        btn_submit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_seat_low1ActionPerformed(evt);
+                btn_submitActionPerformed(evt);
+            }
+        });
+
+        txt_seat_up.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_seat_upActionPerformed(evt);
             }
         });
 
@@ -153,15 +209,66 @@ public class SearchJPanel extends javax.swing.JPanel {
 
         jLabel4.setText("Not Avaliavle Car:");
 
+        txt_avalow.setEditable(false);
         txt_avalow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_avalowActionPerformed(evt);
             }
         });
 
+        txt_avaup.setEditable(false);
         txt_avaup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_avaupActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Serial Num", "Name", "Avaliavle", "Type", "City", "Manufacturer", "Production Date", "Maintenance", "Seat", "Model Number"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        jLabel5.setText("Manufacturers:");
+
+        txt_allmanu.setEditable(false);
+
+        jLabel6.setText("Maintenance Certificate:");
+
+        txt_main.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_mainActionPerformed(evt);
             }
         });
 
@@ -170,116 +277,124 @@ public class SearchJPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1094, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lab_type)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txt_type, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lab_serial_num)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txt_serial_num, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txt_avalow, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txt_avaup, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt_allmanu))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(lab_seat)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt_seat_low, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(jLabel2)
+                                .addGap(0, 0, 0)
+                                .addComponent(txt_seat_up, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(lab_manufacturer)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txt_manufacturer, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(76, 76, 76)
+                                                .addComponent(lab_name)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txt_ava, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lab_pro_date)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txt_pro_date, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(41, 41, 41)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lab_model)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txt_model, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lab_city_car)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txt_city, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txt_main, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(27, 27, 27))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(498, 498, 498))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lab_seat)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_seat_low, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(jLabel2)
-                        .addGap(0, 0, 0)
-                        .addComponent(txt_seat_low1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lab_ava)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comb_ava, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(236, 236, 236))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lab_pro_date)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_pro_date, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(329, 329, 329))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(lab_city_car)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_city, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lab_maintain_certi)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_maintain_certi, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lab_name)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_avalow)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_avaup, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lab_type)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_type, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lab_manufacturer)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_manufacturer, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(62, 62, 62)
-                .addComponent(lab_model)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_model, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 32, Short.MAX_VALUE))
+                .addComponent(btn_submit)
+                .addGap(502, 502, 502))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addGap(44, 44, 44)
                 .addComponent(jLabel1)
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
                     .addComponent(txt_avalow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_avaup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lab_name)
-                        .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lab_type, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txt_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lab_manufacturer, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txt_manufacturer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lab_model)
-                        .addComponent(txt_model, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(8, 8, 8)
+                    .addComponent(txt_avaup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(txt_allmanu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lab_city_car, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_city, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lab_maintain_certi, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_maintain_certi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53)
+                    .addComponent(lab_type, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lab_manufacturer, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_manufacturer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lab_model)
+                    .addComponent(txt_model, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lab_serial_num)
+                    .addComponent(txt_serial_num, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lab_pro_date, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_pro_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(89, 89, 89)
+                    .addComponent(txt_pro_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_city, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lab_city_car, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lab_seat)
                     .addComponent(txt_seat_low, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_seat_low1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_seat_up, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(lab_ava, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comb_ava, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(157, 157, 157)
-                .addComponent(jButton1)
-                .addContainerGap(33, Short.MAX_VALUE))
+                    .addComponent(lab_name)
+                    .addComponent(txt_ava, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(txt_main, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btn_submit)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(107, 107, 107))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -295,17 +410,17 @@ public class SearchJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_pro_dateActionPerformed
 
-    private void txt_maintain_certiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_maintain_certiActionPerformed
+    private void txt_serial_numActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_serial_numActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_maintain_certiActionPerformed
+    }//GEN-LAST:event_txt_serial_numActionPerformed
 
     private void txt_modelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_modelActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_modelActionPerformed
 
-    private void txt_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nameActionPerformed
+    private void txt_avaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_avaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_nameActionPerformed
+    }//GEN-LAST:event_txt_avaActionPerformed
 
     private void txt_typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_typeActionPerformed
         // TODO add your handling code here:
@@ -315,9 +430,9 @@ public class SearchJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_seat_lowActionPerformed
 
-    private void txt_seat_low1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_seat_low1ActionPerformed
+    private void txt_seat_upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_seat_upActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_seat_low1ActionPerformed
+    }//GEN-LAST:event_txt_seat_upActionPerformed
 
     private void txt_avalowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_avalowActionPerformed
         // TODO add your handling code here:
@@ -327,33 +442,452 @@ public class SearchJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_avaupActionPerformed
 
+    private void btn_submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_submitActionPerformed
+        // TODO add your handling code here:
+        Temp[] temp=new Temp[10];
+        
+        while(true){
+        if(txt_city.getText().equals("")&&txt_serial_num.getText().equals("")&&txt_manufacturer.getText().equals("")&&txt_model.getText().equals("")&&
+                txt_ava.getText().equals("")&&txt_pro_date.getText().equals("")&&txt_seat_low.getText().equals("")&&txt_seat_up.getText().equals("")&&txt_type.getText().equals("")
+                &&txt_main.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this,"Please enter information!");
+            //show(temp);
+            break;
+        }
+        else if(txt_type.getText().equals("passenger")&&!txt_ava.getText().isEmpty()){
+            if(txt_ava.getText().equals("yes")||txt_ava.getText().equals("no")){
+                if(txt_ava.getText().equals("yes")){
+                DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
+            
+                for(VitalSigns vs:history.getHistory()){
+                    if(vs.getType().equals("passenger")&&vs.isAva()){
+//                    DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+//                    model.setRowCount(0);
+                    Object[] row=new Object[10];
+                    row[0]=vs;
+                    row[1]=vs.getName();
+                    if(vs.isAva()){
+                        row[2]="yes";
+                    }
+                    else{
+                        row[2]="no";
+                    }
+                    row[3]=vs.getType();
+                    row[4]=vs.getCity_Car();
+                    row[5]=vs.getManufacturer();
+                    row[6]=vs.getProduct_Date();
+                row[7]=vs.getMaintain_Certi();
+                row[8]=vs.getSeat();
+                row[9]=vs.getModel_num();
+            
+                model.addRow(row);
+                    
+                }       
+            }
+                break;
+            }
+            else if(txt_ava.getText().equals("no")){
+                DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
+            
+                for(VitalSigns vs:history.getHistory()){
+                    if(vs.getType().equals("passenger")&&!vs.isAva()){
+//                    DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+//                    model.setRowCount(0);
+                    Object[] row=new Object[10];
+                    row[0]=vs;
+                    row[1]=vs.getName();
+                    if(vs.isAva()){
+                        row[2]="yes";
+                    }
+                    else{
+                        row[2]="no";
+                    }
+                    row[3]=vs.getType();
+                    row[4]=vs.getCity_Car();
+                    row[5]=vs.getManufacturer();
+                    row[6]=vs.getProduct_Date();
+                row[7]=vs.getMaintain_Certi();
+                row[8]=vs.getSeat();
+                row[9]=vs.getModel_num();
+            
+                model.addRow(row);
+                    
+                }       
+            }
+                break;
+            }
+            
+            }
+            else{
+            JOptionPane.showMessageDialog(this,"Invalid enter on the avaliable of the car!");
+
+            break;
+            }
+            
+        }
+        else if(!txt_manufacturer.getText().isEmpty()){
+            String[] manu=txt_manufacturer.getText().split(",");
+            //JOptionPane.showMessageDialog(this,manu);
+            //manu=txt_manufacturer.getText().split(",");
+            DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            
+            for(VitalSigns vs:history.getHistory()){
+                for(int i=0;i<manu.length;i++){
+                if(manu[i].equals(vs.getManufacturer())){
+//                    DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+//                    model.setRowCount(0);
+                    Object[] row=new Object[10];
+                    row[0]=vs;
+                    row[1]=vs.getName();
+                    if(vs.isAva()){
+                        row[2]="yes";
+                    }
+                    else{
+                        row[2]="no";
+                    }
+                    row[3]=vs.getType();
+                    row[4]=vs.getCity_Car();
+                    row[5]=vs.getManufacturer();
+                    row[6]=vs.getProduct_Date();
+                    row[7]=vs.getMaintain_Certi();
+                    row[8]=vs.getSeat();
+                    row[9]=vs.getModel_num();
+            
+                    model.addRow(row);
+                    
+                }       
+            }
+            }
+            break;
+            
+        }
+        else if(!txt_pro_date.getText().isEmpty()){
+            if(txt_pro_date.getText().length()!=4){
+                JOptionPane.showMessageDialog(this,"Please enter right year!");
+                break;
+            }
+            else{
+                //String result=txt_pro_date.getText().substring(4);
+                DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
+            
+                for(VitalSigns vs:history.getHistory()){
+                    if(vs.getProduct_Date().substring(4).equals(txt_pro_date.getText())){
+//                    DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+//                    model.setRowCount(0);
+                        Object[] row=new Object[10];
+                        row[0]=vs;
+                        row[1]=vs.getName();
+                        if(vs.isAva()){
+                            row[2]="yes";
+                        }
+                        else{
+                            row[2]="no";
+                        }
+                        row[3]=vs.getType();
+                        row[4]=vs.getCity_Car();
+                        row[5]=vs.getManufacturer();
+                        row[6]=vs.getProduct_Date();
+                        row[7]=vs.getMaintain_Certi();
+                        row[8]=vs.getSeat();
+                        row[9]=vs.getModel_num();
+            
+                        model.addRow(row);
+                    
+                }       
+            }
+            
+            break;
+            }
+        }
+        else if(!txt_seat_low.getText().isEmpty()||!txt_seat_up.getText().isEmpty()){
+            if(txt_seat_low.getText().isEmpty()||txt_seat_up.getText().isEmpty()||
+                    Integer.valueOf(txt_seat_low.getText()).intValue()>Integer.valueOf(txt_seat_up.getText()).intValue()){
+                JOptionPane.showMessageDialog(this,"Invalid enter on the number of seat!");
+                break;
+            }
+            DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            
+            for(VitalSigns vs:history.getHistory()){
+                if(Integer.valueOf(txt_seat_low.getText()).intValue()<=Integer.valueOf(vs.getSeat()).intValue()&&
+                        Integer.valueOf(txt_seat_up.getText()).intValue()>=Integer.valueOf(vs.getSeat()).intValue()){
+//                    DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+//                    model.setRowCount(0);
+                Object[] row=new Object[10];
+                row[0]=vs;
+                row[1]=vs.getName();
+                if(vs.isAva()){
+                    row[2]="yes";
+                }
+                else{
+                    row[2]="no";
+                }
+                row[3]=vs.getType();
+                row[4]=vs.getCity_Car();
+                row[5]=vs.getManufacturer();
+                row[6]=vs.getProduct_Date();
+                row[7]=vs.getMaintain_Certi();
+                row[8]=vs.getSeat();
+                row[9]=vs.getModel_num();
+            
+                model.addRow(row);
+                    
+                }       
+            }
+            
+            break;
+        }
+        else if(!txt_serial_num.getText().isEmpty()){
+            DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            
+            for(VitalSigns vs:history.getHistory()){
+                if(vs.getSerial_num()==Integer.valueOf(txt_serial_num.getText()).intValue()){
+//                    DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+//                    model.setRowCount(0);
+                Object[] row=new Object[10];
+                row[0]=vs;
+                row[1]=vs.getName();
+                if(vs.isAva()){
+                    row[2]="yes";
+                }
+                else{
+                    row[2]="no";
+                }
+                row[3]=vs.getType();
+                row[4]=vs.getCity_Car();
+                row[5]=vs.getManufacturer();
+                row[6]=vs.getProduct_Date();
+                row[7]=vs.getMaintain_Certi();
+                row[8]=vs.getSeat();
+                row[9]=vs.getModel_num();
+            
+                model.addRow(row);
+                    
+                }       
+            }
+            
+            break;
+        }
+        else if(!txt_model.getText().isEmpty()){
+//            if(!txt_ava.getText().equals("yes")||!txt_ava.getText().equals("no")){
+//                JOptionPane.showMessageDialog(this,"Invalid enter on the avaliable of the car!");
+//                break;
+//            }
+            DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            
+            for(VitalSigns vs:history.getHistory()){
+                if(vs.getModel_num().equals(txt_model.getText())){
+//                    DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+//                    model.setRowCount(0);
+                Object[] row=new Object[10];
+                row[0]=vs;
+                row[1]=vs.getName();
+                if(vs.isAva()){
+                    row[2]="yes";
+                }
+                else{
+                    row[2]="no";
+                }
+                row[3]=vs.getType();
+                row[4]=vs.getCity_Car();
+                row[5]=vs.getManufacturer();
+                row[6]=vs.getProduct_Date();
+                row[7]=vs.getMaintain_Certi();
+                row[8]=vs.getSeat();
+                row[9]=vs.getModel_num();
+            
+                model.addRow(row);
+                    
+                }       
+            }
+            
+            break;
+        }
+        else if(!txt_city.getText().isEmpty()&&!txt_ava.getText().isEmpty()){
+            if(txt_ava.getText().equals("yes")||txt_ava.getText().equals("no")){
+//                JOptionPane.showMessageDialog(this,"Invalid enter on the avaliable of the car!");
+//                break;
+//            }
+            if(txt_ava.getText().equals("yes")){
+                DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
+            
+                for(VitalSigns vs:history.getHistory()){
+                    if(vs.getCity_Car().equals(txt_city.getText())&&vs.isAva()){
+//                    DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+//                    model.setRowCount(0);
+                    Object[] row=new Object[10];
+                    row[0]=vs;
+                    row[1]=vs.getName();
+                    if(vs.isAva()){
+                        row[2]="yes";
+                    }
+                    else{
+                        row[2]="no";
+                    }
+                    row[3]=vs.getType();
+                    row[4]=vs.getCity_Car();
+                    row[5]=vs.getManufacturer();
+                    row[6]=vs.getProduct_Date();
+                row[7]=vs.getMaintain_Certi();
+                row[8]=vs.getSeat();
+                row[9]=vs.getModel_num();
+            
+                model.addRow(row);
+                    
+                }       
+            }
+                break;
+            }
+            else if(txt_ava.getText().equals("no")){
+                DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
+            
+                for(VitalSigns vs:history.getHistory()){
+                    if(vs.getCity_Car().equals(txt_city.getText())&&!vs.isAva()){
+//                    DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+//                    model.setRowCount(0);
+                    Object[] row=new Object[10];
+                    row[0]=vs;
+                    row[1]=vs.getName();
+                    if(vs.isAva()){
+                        row[2]="yes";
+                    }
+                    else{
+                        row[2]="no";
+                    }
+                    row[3]=vs.getType();
+                    row[4]=vs.getCity_Car();
+                    row[5]=vs.getManufacturer();
+                    row[6]=vs.getProduct_Date();
+                row[7]=vs.getMaintain_Certi();
+                row[8]=vs.getSeat();
+                row[9]=vs.getModel_num();
+            
+                model.addRow(row);
+                    
+                }       
+            }
+                break;
+            }
+            }
+            else{
+                JOptionPane.showMessageDialog(this,"Invalid enter on the avaliable of the car!");
+                break;
+            }
+            
+            
+        }
+        else if(!txt_main.getText().isEmpty()){
+//            if(!txt_ava.getText().equals("yes")||!txt_ava.getText().equals("no")){
+//                JOptionPane.showMessageDialog(this,"Invalid enter on the avaliable of the car!");
+//                break;
+//            }
+            DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            
+            for(VitalSigns vs:history.getHistory()){
+                if(vs.getMaintain_Certi().equals(txt_main.getText())){
+                    
+//                    DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+//                    model.setRowCount(0);
+                Object[] row=new Object[10];
+                row[0]=vs;
+                row[1]=vs.getName();
+                if(vs.isAva()){
+                    row[2]="yes";
+                }
+                else{
+                    row[2]="no";
+                }
+                row[3]=vs.getType();
+                row[4]=vs.getCity_Car();
+                row[5]=vs.getManufacturer();
+                row[6]=vs.getProduct_Date();
+                row[7]=vs.getMaintain_Certi();
+                row[8]=vs.getSeat();
+                row[9]=vs.getModel_num();
+            
+                model.addRow(row);
+                    
+                }       
+            }
+            
+            break;
+        }
+        
+        
+        }
+    }//GEN-LAST:event_btn_submitActionPerformed
+
+    private void txt_mainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_mainActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_mainActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> comb_ava;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btn_submit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel lab_ava;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lab_city_car;
-    private javax.swing.JLabel lab_maintain_certi;
     private javax.swing.JLabel lab_manufacturer;
     private javax.swing.JLabel lab_model;
     private javax.swing.JLabel lab_name;
     private javax.swing.JLabel lab_pro_date;
     private javax.swing.JLabel lab_seat;
+    private javax.swing.JLabel lab_serial_num;
     private javax.swing.JLabel lab_type;
+    private javax.swing.JTextField txt_allmanu;
+    private javax.swing.JTextField txt_ava;
     private javax.swing.JTextField txt_avalow;
     private javax.swing.JTextField txt_avaup;
     private javax.swing.JTextField txt_city;
-    private javax.swing.JTextField txt_maintain_certi;
+    private javax.swing.JTextField txt_main;
     private javax.swing.JTextField txt_manufacturer;
     private javax.swing.JTextField txt_model;
-    private javax.swing.JTextField txt_name;
     private javax.swing.JTextField txt_pro_date;
     private javax.swing.JTextField txt_seat_low;
-    private javax.swing.JTextField txt_seat_low1;
+    private javax.swing.JTextField txt_seat_up;
+    private javax.swing.JTextField txt_serial_num;
     private javax.swing.JTextField txt_type;
     // End of variables declaration//GEN-END:variables
+
+    public void show(Temp[] temp) {
+        
+        DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        
+        for(int i=0;i<temp.length;i++){
+            Object[] row=new Object[10];
+            row[0]=temp;
+            row[1]=temp[i].getName();
+            if(temp[i].isAva()){
+                row[2]="yes";
+            }
+            else{
+                row[2]="no";
+            }
+            row[3]=temp[i].getType();
+            row[4]=temp[i].getCity_Car();
+            row[5]=temp[i].getManufacturer();
+            row[6]=temp[i].getProduct_Date();
+            row[7]=temp[i].getMaintain_Certi();
+            row[8]=temp[i].getSeat();
+            row[9]=temp[i].getModel_num();
+            
+            model.addRow(row);
+        }
+    }
 }

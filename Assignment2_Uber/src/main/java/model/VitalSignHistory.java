@@ -38,4 +38,7 @@ public class VitalSignHistory {
         history.remove(vs);
     }
     
+//    public VitalSigns SearchVitals(){
+//        
+//    }
 }

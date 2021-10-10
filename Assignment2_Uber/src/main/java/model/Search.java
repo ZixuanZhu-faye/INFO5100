@@ -17,5 +17,21 @@ public class Search {
         masterSearchList=new MasterSearch();
         history=new VitalSignHistory();
     }
+
+    public MasterSearch getMasterSearchList() {
+        return masterSearchList;
+    }
+
+    public void setMasterSearchList(MasterSearch masterSearchList) {
+        this.masterSearchList = masterSearchList;
+    }
+
+    public VitalSignHistory getHistory() {
+        return history;
+    }
+
+    public void setHistory(VitalSignHistory history) {
+        this.history = history;
+    }
     
 }

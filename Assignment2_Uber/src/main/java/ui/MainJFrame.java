@@ -5,6 +5,7 @@
  */
 package ui;
 
+import model.Catalog;
 import model.VitalSignHistory;
 
 /**
@@ -18,10 +19,11 @@ public class MainJFrame extends javax.swing.JFrame {
      */
     
     VitalSignHistory history;
+    Catalog catalog;
     
     public MainJFrame() {
         initComponents();
-        
+        catalog=new Catalog("");
         history = new VitalSignHistory();
     }
 
@@ -68,13 +70,15 @@ public class MainJFrame extends javax.swing.JFrame {
         controlPanel.setLayout(controlPanelLayout);
         controlPanelLayout.setHorizontalGroup(
             controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(controlPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btn_create)
-                        .addComponent(btn_view))
-                    .addComponent(btn_search, javax.swing.GroupLayout.Alignment.TRAILING))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlPanelLayout.createSequentialGroup()
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(controlPanelLayout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(btn_view, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btn_create, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btn_search, javax.swing.GroupLayout.Alignment.TRAILING)))
                 .addContainerGap())
         );
         controlPanelLayout.setVerticalGroup(
@@ -121,14 +125,14 @@ public class MainJFrame extends javax.swing.JFrame {
     private void btn_createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_createActionPerformed
         // TODO add your handling code here:
         
-        CreateJPanel createPanel=new CreateJPanel(history);
+        CreateJPanel createPanel=new CreateJPanel(history,catalog);
         splitPane.setRightComponent(createPanel);
     }//GEN-LAST:event_btn_createActionPerformed
 
     private void btn_viewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_viewActionPerformed
         // TODO add your handling code here:
         
-        ViewJPanel viewPanel=new ViewJPanel(history);
+        ViewJPanel viewPanel=new ViewJPanel(history,catalog);
         splitPane.setRightComponent(viewPanel);
     }//GEN-LAST:event_btn_viewActionPerformed
 

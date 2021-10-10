@@ -5,7 +5,7 @@
  */
 package ui;
 
-import model.Person;
+import model.VitalSignHistory;
 
 /**
  *
@@ -17,12 +17,12 @@ public class MainJFrame extends javax.swing.JFrame {
      * Creates new form MainJFrame
      */
     
-    Person person;
+    VitalSignHistory history;
     
     public MainJFrame() {
         initComponents();
         
-        person=new Person();
+        history = new VitalSignHistory();
     }
 
     /**
@@ -36,28 +36,31 @@ public class MainJFrame extends javax.swing.JFrame {
 
         splitPane = new javax.swing.JSplitPane();
         controlPanel = new javax.swing.JPanel();
-        create = new javax.swing.JButton();
-        view = new javax.swing.JButton();
+        btn_create = new javax.swing.JButton();
+        btn_view = new javax.swing.JButton();
+        btn_search = new javax.swing.JButton();
         workArea = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1100, 720));
 
-        controlPanel.setPreferredSize(new java.awt.Dimension(138, 1000));
-
-        create.setText("Create");
-        create.addActionListener(new java.awt.event.ActionListener() {
+        btn_create.setText("Create");
+        btn_create.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createActionPerformed(evt);
+                btn_createActionPerformed(evt);
             }
         });
 
-        view.setText("View");
-        view.addActionListener(new java.awt.event.ActionListener() {
+        btn_view.setText("View");
+        btn_view.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewActionPerformed(evt);
+                btn_viewActionPerformed(evt);
+            }
+        });
+
+        btn_search.setText("Search");
+        btn_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchActionPerformed(evt);
             }
         });
 
@@ -68,52 +71,35 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(controlPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(view, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(create, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btn_create)
+                        .addComponent(btn_view))
+                    .addComponent(btn_search, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         controlPanelLayout.setVerticalGroup(
             controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(controlPanelLayout.createSequentialGroup()
-                .addGap(107, 107, 107)
-                .addComponent(create)
+                .addGap(80, 80, 80)
+                .addComponent(btn_create)
                 .addGap(37, 37, 37)
-                .addComponent(view)
-                .addContainerGap(798, Short.MAX_VALUE))
+                .addComponent(btn_view)
+                .addGap(39, 39, 39)
+                .addComponent(btn_search)
+                .addContainerGap(353, Short.MAX_VALUE))
         );
 
         splitPane.setLeftComponent(controlPanel);
-
-        workArea.setMinimumSize(new java.awt.Dimension(800, 500));
-        workArea.setPreferredSize(new java.awt.Dimension(614, 630));
-
-        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        jLabel1.setText("Welcome!");
-
-        jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        jLabel2.setText("NUID:002196924");
 
         javax.swing.GroupLayout workAreaLayout = new javax.swing.GroupLayout(workArea);
         workArea.setLayout(workAreaLayout);
         workAreaLayout.setHorizontalGroup(
             workAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(workAreaLayout.createSequentialGroup()
-                .addGroup(workAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(workAreaLayout.createSequentialGroup()
-                        .addGap(342, 342, 342)
-                        .addComponent(jLabel1))
-                    .addGroup(workAreaLayout.createSequentialGroup()
-                        .addGap(296, 296, 296)
-                        .addComponent(jLabel2)))
-                .addContainerGap(353, Short.MAX_VALUE))
+            .addGap(0, 1178, Short.MAX_VALUE)
         );
         workAreaLayout.setVerticalGroup(
             workAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(workAreaLayout.createSequentialGroup()
-                .addGap(83, 83, 83)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addContainerGap(845, Short.MAX_VALUE))
+            .addGap(0, 596, Short.MAX_VALUE)
         );
 
         splitPane.setRightComponent(workArea);
@@ -122,7 +108,7 @@ public class MainJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(splitPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1003, Short.MAX_VALUE)
+            .addComponent(splitPane)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,17 +118,26 @@ public class MainJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
+    private void btn_createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_createActionPerformed
         // TODO add your handling code here:
-        CreateJPanel createPanel=new CreateJPanel(person);
+        
+        CreateJPanel createPanel=new CreateJPanel(history);
         splitPane.setRightComponent(createPanel);
-    }//GEN-LAST:event_createActionPerformed
+    }//GEN-LAST:event_btn_createActionPerformed
 
-    private void viewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewActionPerformed
+    private void btn_viewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_viewActionPerformed
         // TODO add your handling code here:
-        ViewJPanel viewPanel=new ViewJPanel(person);
+        
+        ViewJPanel viewPanel=new ViewJPanel(history);
         splitPane.setRightComponent(viewPanel);
-    }//GEN-LAST:event_viewActionPerformed
+    }//GEN-LAST:event_btn_viewActionPerformed
+
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+        // TODO add your handling code here:
+        
+        SearchJPanel searchPanel=new SearchJPanel(history);
+        splitPane.setRightComponent(searchPanel);
+    }//GEN-LAST:event_btn_searchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -180,12 +175,11 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_create;
+    private javax.swing.JButton btn_search;
+    private javax.swing.JButton btn_view;
     private javax.swing.JPanel controlPanel;
-    private javax.swing.JButton create;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JSplitPane splitPane;
-    private javax.swing.JButton view;
     private javax.swing.JPanel workArea;
     // End of variables declaration//GEN-END:variables
 }
